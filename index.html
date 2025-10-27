@@ -1,151 +1,130 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>Jellyshot｜タップ一発、クラゲ連鎖。</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#061625">
-  <meta name="description" content="かんたん操作でコンボが気持ちいいスコアアタック。無料、データ収集なし。iPhone/Mac/Apple Vision対応。">
-  <meta property="og:title" content="Jellyshot｜タップ一発、クラゲ連鎖。">
-  <meta property="og:description" content="誰でも遊べるスピードシューティング。コンボをつないでハイスコアへ。">
-  <meta property="og:image" content="images/og.jpg">
-  <meta property="og:type" content="website">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JELLYSHOT｜親子でポンっ！ふわふわクラゲの射的ゲーム</title>
+  <meta name="description" content="小さなお子さんでも安心のタップ操作で、家族みんなでワイワイ遊べる『JELLYSHOT』。赤いクラゲでポイント、黒いクラゲは気をつけて。短い時間でも盛り上がる親子向けカジュアルゲーム。" />
+  <meta property="og:title" content="JELLYSHOT｜親子でポンっ！ふわふわクラゲの射的ゲーム" />
+  <meta property="og:description" content="小さなお子さんでも安心のタップ操作。家族でハイスコア対決しよう！" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pixelhaze-lab.github.io/Jellyshot-promotion-site/" />
+  <meta property="og:image" content="/assets/og-jellyshot.jpg" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="icon" href="/images/favicon.png" />
   <style>
     :root{
-      --bg:#061625; --ink:#e9f4ff; --muted:#9cc4ff; --accent:#3be1ff;
-      --ink-deep:#003044;
-      --space:28px;
-      --radius:14px;
+      --bg:#f6fbff;--bg2:#fffaf5;--ink:#14233a;--muted:#64748b;--accent:#53b7ff;--accent2:#ff6b9a;--card:#ffffff;--ring:rgba(83,183,255,.35);--shadow:0 10px 30px rgba(20,35,58,.08);--radius:20px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0}
-    body{
-      color:var(--ink);
-      font-family:"Inter","Noto Sans JP",system-ui,sans-serif;
-      line-height:1.65;
-      /* 背景画像 + フォールバックのグラデ */
-      background: url("images/intro.jpg") center/cover no-repeat,
-                  radial-gradient(1200px 600px at 70% -10%,#0b2741 0%,var(--bg) 60%);
-      /* iOSでのチラつき回避のため fixed は後述のメディアクエリでのみ有効化 */
-      background-attachment: scroll;
-    }
-
-    .wrap{
-      max-width:1000px; margin:0 auto; padding:var(--space);
-      background:rgba(0,0,0,.35); backdrop-filter:saturate(110%) blur(2px);
-      border-radius:20px;
-    }
-
-    header{display:flex;align-items:center;gap:16px;margin:12px 0 28px}
-    header img{width:56px;height:56px;border-radius:14px}
-    h1{font-size:clamp(26px,4.8vw,44px);margin:0 0 6px;line-height:1.15}
-    .muted{color:var(--muted);font-size:14px}
-
-    .hero{
-      display:grid; grid-template-columns:1.1fr .9fr; gap:24px; align-items:center;
-    }
-    .hero p{font-size:clamp(16px,2.8vw,18px);color:#cfe7ff;margin-top:10px}
-    .cta{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      background:var(--accent);color:var(--ink-deep);
-      padding:14px 20px;border-radius:14px;font-weight:700;text-decoration:none;
-      box-shadow:0 6px 20px rgba(59,225,255,.25); min-height:48px;
-      touch-action:manipulation;
-    }
-    .cta:hover{transform:translateY(-1px)}
-    .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-    .shots img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px 0}
-    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:16px;border-radius:14px}
-    h2{font-size:clamp(20px,3.5vw,24px);margin:32px 0 12px}
-    footer{margin:40px 0 20px;color:#9ab6d1;font-size:13px}
-
-    /* タブレット以下：ヒーロー1カラム / スクショ2列 */
-    @media (max-width:860px){
-      .hero{grid-template-columns:1fr}
-      .shots{grid-template-columns:1fr 1fr}
-      .wrap{padding:20px}
-    }
-
-    /* スマホ：スクショ1列 / CTAフル幅 / 余白と角丸を強めに */
-    @media (max-width:520px){
-      .shots{grid-template-columns:1fr}
-      .cta{display:block;width:100%;text-align:center;margin-top:8px}
-      header{gap:12px}
-      header img{width:48px;height:48px}
-      .wrap{padding:16px;border-radius:16px}
-      body{background-position:center top}
-    }
-
-    /* iOSの背景固定はカクつくので、横幅768px以上だけ fixed */
-    @media (min-width:768px){
-      body{background-attachment:fixed, scroll}
-    }
-
-    /* 動き控えめオプション */
-    @media (prefers-reduced-motion: reduce){
-      .cta{transition:none}
-    }
+    html,body{height:100%}
+    body{margin:0;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),var(--bg2));line-height:1.7}
+    a{color:var(--accent2);text-decoration:none}
+    a:hover{opacity:.9}
+    .container{width:min(1100px,92vw);margin:0 auto;padding:32px 0}
+    header{position:sticky;top:0;background:rgba(255,255,255,.7);backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid #eef2f7;z-index:50}
+    header .inner{display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(1100px,92vw);margin:0 auto;padding:10px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{width:34px;height:34px;border-radius:10px;box-shadow:var(--shadow)}
+    nav{display:flex;gap:18px;font-size:14px}
+    .hero{position:relative;overflow:hidden}
+    .hero-inner{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:28px;padding:56px 0}
+    .badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;background:#fff;border:1px solid #e6eef6;border-radius:999px;padding:6px 12px;box-shadow:var(--shadow)}
+    h1{font-size:clamp(28px,4vw,44px);line-height:1.2;margin:14px 0 10px}
+    .sub{font-size:clamp(16px,2.2vw,18px);color:var(--muted)}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;gap:10px;border:2px solid var(--accent);background:var(--accent);color:#fff;padding:12px 16px;border-radius:14px;font-weight:700;box-shadow:var(--shadow)}
+    .btn.outline{background:#fff;color:var(--accent);border-color:var(--accent)}
+    section{padding:40px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid #ecf1f7;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+    .how{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .note{font-size:14px;color:var(--muted)}
+    footer{padding:30px 0;color:#5b6b80;font-size:14px}
+    @media (max-width:900px){.hero-inner,.how{grid-template-columns:1fr}nav{display:none}.grid-3{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <img src="images/jellyfishicon.png" alt="Jellyshot app icon" loading="lazy" decoding="async">
-      <div>
-        <h1>タップ一発、クラゲ連鎖。<br>Jellyshot</h1>
-        <div class="muted">無料・データ収集なし・iPhone/Mac/Apple Vision対応</div>
-      </div>
-    </header>
-
+  <header>
+    <div class="inner">
+      <div class="brand"><img src="images/jellyfishicon.png" alt="JELLYSHOT ロゴ"><span>JELLYSHOT</span></div>
+      <nav>
+        <a href="#features">特徴</a>
+        <a href="#how">あそびかた</a>
+        <a href="#parents">保護者の方へ</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn outline" href="https://apps.apple.com/jp/app/jellyshot/id6753650392?l=en-US" target="_blank" rel="noopener">ダウンロード</a>
+    </div>
+  </header>
+  <main>
     <section class="hero">
-      <div>
-        <p>かんたん操作 × スピード感。<br>連続ヒットでコンボをつないで、ハイスコアを目指そう。</p>
-        <a class="cta" href="https://apps.apple.com/jp/app/jellyshot/id6753650392?l=en-US&utm_source=site&utm_medium=button&utm_campaign=launch" target="_blank" rel="noopener">App Storeで入手</a>
-        <div class="shots">
-          <img src="images/ss1.PNG" alt="Jellyshot screenshot 1" loading="lazy" decoding="async">
-          <img src="images/ss2.PNG" alt="Jellyshot screenshot 2" loading="lazy" decoding="async">
-          <!-- 3枚目が用意できたら下を有効化
-          <img src="images/ss3.PNG" alt="Jellyshot screenshot 3" loading="lazy" decoding="async">
-          -->
+      <div class="container hero-inner">
+        <div>
+          <span class="badge">👨‍👩‍👧 親子でいっしょに</span>
+          <h1>親子でポンっ！<br>ふわふわクラゲの射的ゲーム</h1>
+          <p class="sub">ゆかいなクラゲたちが、あなたのタップを待ってるよ。<br>赤いクラゲを“ポンっ”と撃ってポイントゲット！黒いクラゲには“あっ”と気をつけてね。</p>
+          <div class="cta">
+            <a class="btn" href="https://apps.apple.com/jp/app/jellyshot/id6753650392?l=en-US" target="_blank" rel="noopener">App Store で遊ぶ</a>
+            <a class="btn outline" href="#how">あそびかたを見る</a>
+          </div>
         </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <h2>遊び方</h2>
-          <ol>
-            <li>クラゲを<strong>タップで撃ち抜く</strong></li>
-            <li><strong>連続ヒットでコンボ</strong>が伸びる</li>
-            <li><strong>ハイスコア</strong>を更新して共有</li>
-          </ol>
-        </div>
-        <div class="grid3" style="margin-top:16px">
-          <div class="card"><strong>秒速スタート</strong><br>起動してすぐ爽快。</div>
-          <div class="card"><strong>コンボ中毒</strong><br>つながるほど点が跳ねる。</div>
-          <div class="card"><strong>スコアで勝負</strong><br>友だちとランキング争い。</div>
-        </div>
-
-        <div class="card">
-          <h2>FAQ</h2>
-          <p><strong>料金は？</strong> 無料です。</p>
-          <p><strong>対応機種は？</strong> iPhone（iOS 18.5+）、Mac（Appleシリコン / macOS 15.5+）、Apple Vision（visionOS 2.5+）。</p>
-          <p><strong>データ収集は？</strong> 開発者申告：データ収集なし。</p>
+        <div>
+          <img src="images/ss1.PNG" alt="JELLYSHOT ゲーム開始画面" style="width:100%;border-radius:24px;box-shadow:0 8px 20px rgba(0,0,0,.1);">
         </div>
       </div>
     </section>
-
-    <footer>
-      © Yuka Yamashita — <a href="https://apps.apple.com/jp/app/jellyshot/id6753650392?l=en-US" target="_blank" rel="noopener">App Storeページ</a>
-    </footer>
-  </div>
-  <!-- 計測を入れる場合：gtag の後にクリックイベント送信 -->
-  <script>
-    document.getElementById('cta-appstore')?.addEventListener('click', function(){
-      if (window.gtag) gtag('event','click_appstore_button',{method:'hero_cta'});
-    });
-  </script>
+    <section id="features" class="container">
+      <h2>特徴</h2>
+      <div class="grid-3">
+        <div class="card"><h3>かんたん操作</h3><p>小さなお子さんでも直感的に遊べる、やさしい設計。</p></div>
+        <div class="card"><h3>家族で盛り上がる</h3><p>スピードアップでハイスコア対決。親子で笑顔に。</p></div>
+        <div class="card"><h3>スキマ時間に</h3><p>お出かけ前や待ち時間にもサクッと遊べる軽さ。</p></div>
+      </div>
+    </section>
+    <section id="how" class="how container">
+      <div>
+        <h2>あそびかた</h2>
+        <ol>
+          <li>赤いクラゲをタップしてポイントゲット！</li>
+          <li>黒いクラゲはマイナス。うっかりタップに注意！</li>
+          <li>時間がたつほどスピードアップ。集中力がカギ！</li>
+          <li>スターを撃つとボーナス点が入るよ。</li>
+        </ol>
+        <p class="note">※プレイ中の広告表示は最小限。小さなお子さんがいても安心して遊べます。</p>
+      </div>
+      <div class="card">
+        <h3>スクリーンショット</h3>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+          <img src="images/ss1.PNG" alt="JELLYSHOT スタート画面" style="width:100%;border-radius:12px;">
+          <img src="images/ss2.PNG" alt="JELLYSHOT プレイ中の様子" style="width:100%;border-radius:12px;">
+        </div>
+      </div>
+    </section>
+    <section id="parents" class="container">
+      <h2>保護者の方へ</h2>
+      <p>『JELLYSHOT』は、短時間で完結する気軽さと、子どもでもわかりやすい操作を大切にしています。誤タップしづらい大きめUIとシンプルなルールで初めてのゲーム体験にもおすすめです。</p>
+      <ul>
+        <li>広告は最小限（誤タップ対策）</li>
+        <li>音量オフでも楽しめる</li>
+        <li>短時間で一区切り（時間管理しやすい）</li>
+      </ul>
+    </section>
+    <section id="faq" class="container">
+      <h2>FAQ</h2>
+      <details><summary>対象年齢は？</summary><p>タップ操作に慣れていればどなたでも。小さなお子さんは保護者と一緒に遊んでください。</p></details>
+      <details><summary>課金はありますか？</summary><p>基本プレイは無料です。将来的に追加コンテンツを検討する場合はお知らせします。</p></details>
+      <details><summary>オフラインでも遊べますか？</summary><p>初回ダウンロード後は電波が弱い環境でもプレイ可能です（ランキング機能は除く）。</p></details>
+    </section>
+    <section class="container" style="text-align:center">
+      <h2>家族でいちばんの「クラゲハンター」はだれ？</h2>
+      <p>お父さんもお母さんも子どもも、みんなで笑顔に。今すぐダウンロード！</p>
+      <div class="cta" style="justify-content:center">
+        <a class="btn" href="https://apps.apple.com/jp/app/jellyshot/id6753650392?l=en-US" target="_blank" rel="noopener">App Store で遊ぶ</a>
+      </div>
+    </section>
+  </main>
+  <footer class="container"><span>© <span id="y"></span> PixelHaze Lab</span></footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
 </body>
 </html>
